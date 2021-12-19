@@ -1,0 +1,16 @@
+
+  .font{
+    text-shadow: 1.8px 1.8px rgb(247, 248, 248) ;
+    font-size: 20px;
+    font-family: cursive;
+    margin-bottom: 0px !important;
+    padding: 20px !important;
+    cursor: pointer;
+  }
+  .bshadow{
+    box-shadow: 1.5px 1.5px 1.5px 1.5px lightblue;
+  }
+  .fontButtonds{
+    font-size: 20px;
+    font-family: cursive;
+  }

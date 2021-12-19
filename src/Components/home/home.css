@@ -1,0 +1,24 @@
+.font{
+    font-size: 20px;
+    font-family:cursive;
+  }
+  .h1{
+    font-size: 36px;
+  }
+  .shasowHome{
+    text-shadow: 1.8px 1.8px lightblue;
+  }
+  .bshadow{
+    box-shadow: 1.5px 1.5px 1.5px 1.5px lightblue;
+  }
+  .fontButtonds{
+    font-size: 20px;
+    font-family: cursive;
+  }
+  .forFiveDays{
+    font-size: 12px;
+    font-family: cursive;
+    
+    
+  }
+ 

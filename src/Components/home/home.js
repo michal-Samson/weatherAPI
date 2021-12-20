@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { actions } from '../../Store/actions';
 import './home.css';
-import { data } from 'jquery';
+import env from '../../env.env'
 export default function Home() {
-  const cityChoose=useSelector(state=>state.WeatherReducer.cityChoose)
+  const cityChoose = useSelector(state => state.WeatherReducer.cityChoose)
 
 
   const regions = useSelector((state) => state.WeatherReducer.regions);
@@ -16,18 +16,19 @@ export default function Home() {
   const [to, setTo] = useState("f");
   const [nameCity, setNameCity] = useState("");
 
-  const baseURL = "http://dataservice.accuweather.com/locations/v1/cities/autocomplete?"
-  const currentWeather = "http://dataservice.accuweather.com/currentconditions/v1/"
-  const API_KEY = "apikey=G2zVeiJtARitzgfWgp96KsAvvkQju4XL&q="
+  const BASE_URL = "http://dataservice.accuweather.com/"
+  const SHERCH_CITY = "locations/v1/cities/autocomplete?"
+
+  const CURRENT_WEATHER = "http://dataservice.accuweather.com/currentconditions/v1/"
+  const API_KEY = "apikey=G2zVeiJtARitzgfWgp96KsAvvkQju4XL"
 
   const searchCity = async (event) => {
-    debugger
+     
     setNameCity(event.target.value)
 
-
+debugger
     //Request to api autocomplete cities
-    const res = await axios.get(`${baseURL}${API_KEY}${event.target.value}&language=en-us`)
-
+    const res = await axios.get(`${BASE_URL}${SHERCH_CITY}${API_KEY}&q=${event.target.value}&language=en-us`)
     //set the regiins
     dispatch(actions.addToRegions(res.data))
 
@@ -35,32 +36,36 @@ export default function Home() {
 
 
   const chooseCity = async (city) => {
-    debugger
+     debugger
     setNameCity(city.LocalizedName)
 
 
     //Request to api currentWeather by key
-    const res1 = await axios.get(`${currentWeather}${cityChoose.idName}?apikey=dhH2pZGM0MSfaJAL4GQtZghuQWzB96Hg&details=true`);
+    const res1 = await axios.get(`${CURRENT_WEATHER}${cityChoose.idName}?${API_KEY}&details=true`);
 
     let y = res1.data[0].Temperature.Metric.Value;
     y = Math.round(y);
 
     dispatch(actions.setItem({ "name": "cityName", "value": city.LocalizedName }));
     dispatch(actions.setItem({ "name": "idName", "value": city.Key }));
-    dispatch(actions.setItem({ "name": "weatherText", "value":res1.data[0].WeatherText}));
+    dispatch(actions.setItem({ "name": "weatherText", "value": res1.data[0].WeatherText }));
     dispatch(actions.setItem({ "name": "temp", "value": y }));
 
   }
 
   function addFavourites(favorite) {
-    debugger
-    dispatch(actions.addFavourites(favorite))
+     
 
     console.log(favorite);
     axios.post('https://localhost:44342/FavoriteCitys/AddCity', favorite)
       .then((list) => {
-        console.log("!!" + list[data])
-        dispatch(actions.setAllItem(list[data]));
+         
+        if (list.data == "yes") {
+          dispatch(actions.setAllItem(favorite));
+        }
+        else{
+          alert(" The city is already on your list of favorite cities")
+        }
       },
         (error) => {
           console.log(error)
@@ -71,7 +76,7 @@ export default function Home() {
 
 
   function convert(e) {
-    debugger
+     
     if (e === 'c') {
       dispatch(actions.setItem({ "name": "temp", "value": (Math.round(cityChoose.temp * 9 / 5) + 32) }));
       setDegree("f")
@@ -116,7 +121,7 @@ export default function Home() {
             </div>
             <div className='col-sm-8'>
               <div className="font shasowHome h1 "  >
-                <center   >{cityChoose.cityName}</center>
+                <center >{cityChoose.cityName}</center>
               </div>
               <h5 className='font shasowHome' >{cityChoose.temp}{degree} <button style={{ borderRadius: '50%', width: '2rem', height: '2rem' }} onClick={() => convert(degree)}>{to}</button></h5>
               <p className="font shasowHome">{cityChoose.weatherText}</p>
@@ -127,17 +132,5 @@ export default function Home() {
         </div>
       </div>
     </>
-
-
-
-
-
-
-
-
-
-
-
-
   )
 }

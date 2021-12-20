@@ -5,7 +5,7 @@ import { ADD_FAVOURITES, } from '../actions/'
 
 export const cradServer = store => next => action => {
     if (action.type === ADD_FAVOURITES) {
-        debugger;
+         ;
      axios.post(`https://localhost:44342/FavoriteCitys/AddCity/`,favorite)
      .then((d) => {
        console.log("!!" + d.data)

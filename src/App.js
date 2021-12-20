@@ -10,7 +10,7 @@ export default function App() {
         console.log("idUser" + document.cookie)
     else
         document.cookie = Math.floor(Math.random() * 1000000000);
-   debugger
+    
         dispatch(actions.setItem({ "name": "idUser", "value": document.cookie }));
 
     return (

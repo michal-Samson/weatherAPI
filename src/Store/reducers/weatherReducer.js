@@ -1,5 +1,4 @@
 import produce from 'immer';
-import { actions } from '../actions';
 import createReducer from './reducerUtils';
 const initialState = {
     cityChoose: {
@@ -7,11 +6,11 @@ const initialState = {
         cityName: "Tel-Aviv",
         weatherText: "sunny ",
         idName: "90",
-        temp: "34",
+        temp: 34,
     },
 
-    regions: [],
-
+    regions: [null],
+    favourites:[null],
 
 }
 const weather = {
@@ -20,14 +19,16 @@ const weather = {
         state.cityChoose[action.payload.name] = action.payload.value
     },
     setAllItem(state, action) {
+         
         state.cityChoose = action.payload
 
-    }
-
-    ,
-    addToRegions(state = initialState, action) {
+    },
+    addToRegions(state, action) {
         state.regions = action.payload;
-
+    },
+    addFavourites(state , action) {
+         
+        state.favourites = action.payload;
     },
 
 };

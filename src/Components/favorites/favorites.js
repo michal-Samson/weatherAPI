@@ -1,51 +1,44 @@
 
-import React, { useState ,useEffect } from 'react';
+import React, { useState ,useEffect, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { actions } from '../../Store/actions';
 export default function Favorites() {
   const dispatch = useDispatch();
-  const [cityFavorites, setCityFavorites] = useState([]);
-  useEffect(() => {
-    axios.get(`https://localhost:44342/FavoriteCitys/get?id=${document.cookie}`)
-    .then((listCity) => {
-      debugger
-      setCityFavorites(listCity["data"])
-    })  },[cityFavorites]);
+  const cityFavorites = useSelector((state) => state.WeatherReducer.favourites);
 
   const toHomePage = async (item) => {
-    debugger
 
     //set the current values to cityName and waetherText
-    dispatch(actions.setItem({ "name": "currentCity", "value": (item.cityName) }));
+    dispatch(actions.setItem({ "name": "cityName", "value": (item.cityName) }));
     dispatch(actions.setItem({ "name": "weatherText", "value": (item.weatherText) }));
     dispatch(actions.setItem({ "name": "temp", "value": (item.temp) }));
-
   }
   function deleteFromFavourites(idUser, idName) {
-    debugger
+     
     let id={idUser:idUser,idName:idName}
     axios.delete(`https://localhost:44342/FavoriteCitys/DeleteCityById?id=${idUser}@${idName}`)
       .then((listCity) => {
-        debugger
-        setCityFavorites(listCity["data"])
+         
+        dispatch(actions.addFavourites(listCity["data"]))
       }, (error) => {
         console.log(error);
       })
     }
 
   function getFavoriteCitys() {
-    debugger
+     
 
     axios.get(`https://localhost:44342/FavoriteCitys/get?id=${document.cookie}`)
       .then((listCity) => {
-        debugger
-        setCityFavorites(listCity["data"])
+         
+        dispatch(actions.addFavourites(listCity["data"]))
+
       })
   }
   return (
     <div>
-      <p className=' font'  onClick={getFavoriteCitys}>You have {cityFavorites.length} favorite cities</p>
+      <button className=' font'  onClick={getFavoriteCitys}>You have {cityFavorites.length} favorite cities</button>
 
         
 
